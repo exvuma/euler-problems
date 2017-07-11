@@ -70,10 +70,10 @@ function solve3()
 function avg(x,y){
   return (x + y)/ 2
 }
-function findb(a, min_b, max_b, it){
-  //return undef if unsolveable , returns a solved value of b, if there
-  // exisits some b between min_b and max_b
-  //  2nd item returned is number of recursions i.e. returns [solved_b , it]
+function findb(a, min_b, max_b, it){ // O(logn)
+  //return undef if unsolveable , returns solved value of b, if there
+  // exisits some b between min_b and max_b for which a + b + sqrt(a^2 + b^2) = 1000
+  //  returns [solved_b , it] where it is number of recursions
   it ++
   // a + b + sqrt(a^2 + b^2)
   var max_solve = a + max_b+Math.sqrt(Math.pow(max_b, 2) + Math.pow(a, 2))
@@ -109,7 +109,7 @@ function findb(a, min_b, max_b, it){
   }
 
 
-function solve4(){
+function solve4(){ //O(n)
   var it = 0
   const [a, b] = [1, 1]
   const max = 1000

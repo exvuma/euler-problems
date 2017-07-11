@@ -1,7 +1,5 @@
 // 1, 1, 2, 3, 5, 8, 13, 21, ...
 function fib(i) {
-  // var x = 1
-  // var sum = 0
   if (i <= 2)
     return 1
   return fib(i-1) + fib(i-2)
