@@ -19,11 +19,8 @@ function nextOpts(rowname, arr){
   //   var ob = {}
   for(var k=0; k< len-1;k++){
     //iterate over first row
-    // pathName = rowname.concat(k.toString())
-    // ob[pathName] = arr[0][0] + arr[1][i]
+
     options = {}
-    // options[rowname.concat((k).toString())] = arr[0][k] + arr[1][k]
-    // options[rowname.concat((k+1).toString())] = arr[0][k] + arr[1][k+1]
     next1name = "c" + k.toString().concat( "r" + (rowname + 1))
     options[next1name] = arr[0][k] + arr[1][k]
     next2name = "c" + ( k +1).toString().concat( "r" + (rowname + 1)) 
@@ -62,40 +59,42 @@ function nextOpts2(origName, arr){
   for(var row = 0 ; row < arr.length  - 1; row++){// iterate rows
     for(var col = 0 ; col < arr[row].length; col++){ // iterate columns in a row
       var obj = {}
-      // size += arr[row][i] + arr[row+1][col]
-      // ob[origName] = size
-      // results.push(ob)
-      // if(!knownPaths[prevPathName]){
-      //   pathName = i.toString().concat(row.toString())
-      // }
-      // pathName = i.toString().concat(row.toString().concat("-".concat(prevPathName)))
+
 
       spotName =  "c" + col.toString().concat( "r" + (row + 1).toString())
       //pathHistory = pathHistory.append(i.toString().concat(row.toString()))
 
       var opts = nextOpts(row, arr.slice(row +1, row + 3))
       path2Name =  bestHistory[spotName]//"c" + i.toString().concat( "r" + row.toString().concat("-".concat(knownPaths["c" + i.toString() + "r" + (row])))
-      if (!opts[1] || !opts[1][spotName] || opts[0][spotName] > opts[1][spotName]){
-         prevSpot = "c" + col + "r" + (row)
-         bestHistory[spotName] = {"path" : prevSpot + bestHistory[prevSpot]["path"], "value": opts[0][spotName]}
-      }else{
-        prevSpot = "c" + (col + 1) + "r" + (row)
-        bestHistory[spotName] = {"path" : prevSpot + bestHistory[prevSpot]["path"], "value": opts[1][spotName]}
+      for(var colOpts = 0; colOpts < opts.length - 1 ; colOpts++){
+        if(col == 0){
+             prevSpot = "c" + col + "r" + (row)
+             bestHistory[spotName] = {"path" : prevSpot + bestHistory[prevSpot]["path"], "value": opts[colOpts][spotName]}
+             break
+         }
+         if(col == arr[row].length - 1){
+            prevSpot = "c" + (col + colOpts) + "r" + (row)
+            bestHistory[spotName] = {"path" : prevSpot + bestHistory[prevSpot]["path"], "value": opts[colOpts + 1][spotName]}
+            break
+
+         }
+        if(!opts[colOpts + 1] || !opts[colOpts + 1][spotName]){
+          continue
+        }
+        if (opts[colOpts][spotName] > opts[colOpts + 1][spotName]){
+           prevSpot = "c" + col + "r" + (row)
+           bestHistory[spotName] = {"path" : prevSpot + bestHistory[prevSpot]["path"], "value": opts[colOpts][spotName]}
+        }else{
+          prevSpot = "c" + (col + colOpts + 1) + "r" + (row)
+          bestHistory[spotName] = {"path" : prevSpot + bestHistory[prevSpot]["path"], "value": opts[colOpts + 1][spotName]}
+        }
       }
-      // sum_arr[row] = opts
-      // // record this path
-      // if(!knownPaths[pathName] || knownPaths[pathName] < size){
-      //   knownPaths[pathName] = size
-      //   // break
-      // }
-      // prevPathName = pathName
-      // remainingNumRows --;
     }
       prevSpot = spotName
   }
   console.log(results)
   return results
-  // return{ "A": arr[0] + arr[0][1], "B": arr[0] + arr[0][1]}
+
 }
 
 var nextOptsArr = {}//{ "AC" : 10 , "BC": 12}
